@@ -57,7 +57,37 @@ public class WorkoutTrackerApp {
     private static void runSearchScreen() {
         String command;
         do {
+            System.out.println();
+            System.out.println(" Search ");
+            System.out.println("1) By Name");
+            System.out.println("2) By Type");
+            System.out.println("3) By Length");
+            System.out.println("0) Back");
+            System.out.println("Enter a command:");
+            command = scanner.nextLine().trim().toUpperCase();
+
+            switch (command) {
+                case "1" -> searchByName();
+                case "2" -> searchByType();
+                case "3" -> searchByLength();
+                case "0" -> System.out.println("Back to Workouts");
+                default -> System.out.println("That isn't a command. Try again.");
+            }
+        } while (!command.equals("0"));
+    }
+
+    private static void addWorkouts() {
+        String name = promptForString("Name: ");
+        int minutes = promptForInt("Length in minutes: ");
+        while (minutes <= 0) {
+            System.out.println("The length must be more than 0 minutes.");
+            minutes = promptForInt("Length in minutes: ");
 
         }
+
+        System.out.println("Added " + name + " (" + minutes + " minutes)");
+        pressEnterToContinue();
     }
+
+    p
 }
