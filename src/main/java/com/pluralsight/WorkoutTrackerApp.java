@@ -89,5 +89,49 @@ public class WorkoutTrackerApp {
         pressEnterToContinue();
     }
 
-    p
+    private static void displayAllWorkouts() {
+        System.out.println("TODO: display all workouts");
+        pressEnterToContinue();
+    }
+
+    private static void displayQuickWorkouts() {
+        System.out.println("TODO: display quick workouts (30 minutes or less)");
+        pressEnterToContinue();
+    }
+
+    private static void displayFavoriteWorkouts() {
+        System.out.println("TODO: display favorite workouts");
+        pressEnterToContinue();
+    }
+
+    private static void searchByName() {
+        String name = promptForString("Name to search for: ");
+        System.out.println("TODO: display the workouts whose name matches " + name);
+        pressEnterToContinue();
+    }
+
+    private  static void searchByType() {
+
+    }
+
+    private static void pressEnterToContinue() {
+        System.out.println();
+        System.out.print("Press Enter to go back to the menu...");
+        scanner.nextLine();
+    }
+
+    private static String promptForString(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("This can't be blank.");
+            } else if (input.contains("|")) {
+                System.out.println("Please don't use the | character.");
+            } else  {
+                return input;
+            }
+        }
+    }
 }
