@@ -18,11 +18,11 @@ public class WorkoutTrackerApp {
             System.out.println("N) New Workout");
             System.out.println("W) Workouts");
             System.out.println("X) Exit");
-            System.out.println("Enter command: ");
+            System.out.print("Enter a command: ");
             command = scanner.nextLine().trim().toUpperCase();
 
             switch (command) {
-                case "N" -> addWorkouts();
+                case "N" -> addWorkout();
                 case "W" -> runWorkoutsScreen();
                 case "X" -> System.out.println("Goodbye!");
                 default -> System.out.println("That isn't a command. Try again.");
@@ -40,7 +40,7 @@ public class WorkoutTrackerApp {
             System.out.println("F) Favorites");
             System.out.println("S) Search");
             System.out.println("H) Home");
-            System.out.println("Enter a command: ");
+            System.out.print("Enter a command: ");
             command = scanner.nextLine().trim().toUpperCase();
 
             switch (command) {
@@ -63,7 +63,7 @@ public class WorkoutTrackerApp {
             System.out.println("2) By Type");
             System.out.println("3) By Length");
             System.out.println("0) Back");
-            System.out.println("Enter a command:");
+            System.out.print("Enter a command: ");
             command = scanner.nextLine().trim().toUpperCase();
 
             switch (command) {
@@ -76,13 +76,12 @@ public class WorkoutTrackerApp {
         } while (!command.equals("0"));
     }
 
-    private static void addWorkouts() {
+    private static void addWorkout() {
         String name = promptForString("Name: ");
         int minutes = promptForInt("Length in minutes: ");
         while (minutes <= 0) {
             System.out.println("The length must be more than 0 minutes.");
             minutes = promptForInt("Length in minutes: ");
-
         }
 
         System.out.println("Added " + name + " (" + minutes + " minutes)");
@@ -110,14 +109,38 @@ public class WorkoutTrackerApp {
         pressEnterToContinue();
     }
 
-    private  static void searchByType() {
+    private static void searchByType() {
+        String type = promptForString("Type to search for (like cardio or strength): ");
+        System.out.println("TODO: display the " + type + " workouts");
+        pressEnterToContinue();
+    }
 
+    private static void searchByLength() {
+        int minutes = promptForInt("The most minutes you have: ");
+        while (minutes <= 0) {
+            System.out.println("The minutes must be more than 0.");
+            minutes = promptForInt("The most minutes you have: ");
+        }
+
+        System.out.println("TODO: display the workouts of " + minutes + " minutes or less");
+        pressEnterToContinue();
     }
 
     private static void pressEnterToContinue() {
         System.out.println();
         System.out.print("Press Enter to go back to the menu...");
         scanner.nextLine();
+    }
+
+    private static int promptForInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a whole number, like 12.");
+            }
+        }
     }
 
     private static String promptForString(String prompt) {
@@ -129,7 +152,7 @@ public class WorkoutTrackerApp {
                 System.out.println("This can't be blank.");
             } else if (input.contains("|")) {
                 System.out.println("Please don't use the | character.");
-            } else  {
+            } else {
                 return input;
             }
         }
