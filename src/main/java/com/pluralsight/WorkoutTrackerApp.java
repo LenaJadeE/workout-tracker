@@ -83,15 +83,16 @@ public class WorkoutTrackerApp {
 
     private static void addWorkout() {
         String name = promptForString("Name: ");
+        String type = promptForString("Type (like cardio or strength): ");
         int minutes = promptForInt("Length in minutes: ");
         while (minutes <= 0) {
             System.out.println("The length must be more than 0 minutes.");
             minutes = promptForInt("Length in minutes: ");
         }
 
-        boolean favorite = promptForYesOrNo("Is it a favorite? (Y/N): ");
+        boolean favorite = promptForFavorite();
 
-        workouts.add(new Workouts(name, type, minutes, favorite));z
+        workouts.add(new Workouts(name, type, minutes, favorite));
 
         System.out.println("Added " + name + " (" + minutes + " minutes)");
         pressEnterToContinue();
@@ -103,7 +104,7 @@ public class WorkoutTrackerApp {
     }
 
     private static void displayQuickWorkouts() {
-        List<Workouts> matches = new  ArrayList<>();
+        List<Workouts> matches = new ArrayList<>();
         for (Workouts workout : workouts) {
             if (workout.getMinutes() <= QuickWorkoutMinutes) {
                 matches.add(workout);
@@ -114,19 +115,41 @@ public class WorkoutTrackerApp {
     }
 
     private static void displayFavoriteWorkouts() {
-        System.out.println("TODO: display favorite workouts");
+        List<Workouts> matches = new ArrayList<>();
+        for (Workouts workout : workouts) {
+            if (workout.isFavorite()) {
+                matches.add(workout);
+            }
+        }
+        displayWorkouts("Favorites", matches);
         pressEnterToContinue();
     }
 
     private static void searchByName() {
         String name = promptForString("Name to search for: ");
-        System.out.println("TODO: display the workouts whose name matches " + name);
+        List<Workouts> matches = new ArrayList<>();
+        for (Workouts workout : workouts) {
+
+            if (workout.getName().toLowerCase().contains(name.toLowerCase())) {
+                matches.add(workout);
+            }
+        }
+
+        displayWorkouts("Name: " + name, matches);
         pressEnterToContinue();
     }
 
     private static void searchByType() {
         String type = promptForString("Type to search for (like cardio or strength): ");
-        System.out.println("TODO: display the " + type + " workouts");
+
+        List<Workouts> matches = new ArrayList<>();
+        for (Workouts workout : workouts) {
+            if (workout.getType().equalsIgnoreCase(type)) {
+                matches.add(workout);
+            }
+        }
+
+        displayWorkouts("Type: " + type, matches);
         pressEnterToContinue();
     }
 
@@ -137,8 +160,32 @@ public class WorkoutTrackerApp {
             minutes = promptForInt("The most minutes you have: ");
         }
 
-        System.out.println("TODO: display the workouts of " + minutes + " minutes or less");
+        List<Workouts> matches = new ArrayList<>();
+        for (Workouts workout : workouts) {
+            if (workout.getMinutes() <= minutes) {
+                matches.add(workout);
+            }
+        }
+
+        displayWorkouts(minutes + " minutes or less", matches);
         pressEnterToContinue();
+    }
+
+    private static void displayWorkouts(String title, List<Workouts> entries) {
+        System.out.println("=== " + title + " ===");
+
+        if (entries.isEmpty()) {
+            System.out.println("No workouts found.");
+            return;
+        }
+        System.out.printf(RowFormat, "Name", "Type", "Minutes", "Favorite");
+        for (Workouts workout : entries) {
+            System.out.printf(RowFormat, workout.getName(), workout.getType(), workout.getMinutes(),
+                    workout.isFavorite() ? "Yes" : "No");
+        }
+
+        System.out.println();
+        System.out.println(entries.size() + (entries.size() == 1 ? " workout" : " workouts"));
     }
 
     private static void pressEnterToContinue() {
@@ -173,17 +220,18 @@ public class WorkoutTrackerApp {
         }
     }
 
-    private static boolean promptForYesOrNo(String prompt) {
+    private static boolean promptForFavorite() {
         while (true) {
-            System.out.print(prompt);
+            System.out.print("Is it a favorite? (Y/N): ");
             String input = scanner.nextLine().trim().toUpperCase();
 
             if (input.equals("Y")) {
                 return true;
-            } else  if (input.equals("N")) {
+            } else if (input.equals("N")) {
                 return false;
             }
-            System.out.println("Please type Y or N");
+            System.out.println("Please type Y or N.");
         }
     }
+
 }
