@@ -1,9 +1,14 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class WorkoutTrackerApp {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final int QuickWorkoutMinutes = 30;
+    private static final String RowFormat = "%-24s  %-12s  %7s  %-8s%n";
+    private static final List<Workouts> workouts = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Welcome to the Workout Tracker App!");
@@ -84,17 +89,27 @@ public class WorkoutTrackerApp {
             minutes = promptForInt("Length in minutes: ");
         }
 
+        boolean favorite = promptForYesOrNo("Is it a favorite? (Y/N): ");
+
+        workouts.add(new Workouts(name, type, minutes, favorite));z
+
         System.out.println("Added " + name + " (" + minutes + " minutes)");
         pressEnterToContinue();
     }
 
     private static void displayAllWorkouts() {
-        System.out.println("TODO: display all workouts");
+        displayWorkouts("All Workouts", workouts);
         pressEnterToContinue();
     }
 
     private static void displayQuickWorkouts() {
-        System.out.println("TODO: display quick workouts (30 minutes or less)");
+        List<Workouts> matches = new  ArrayList<>();
+        for (Workouts workout : workouts) {
+            if (workout.getMinutes() <= QuickWorkoutMinutes) {
+                matches.add(workout);
+            }
+        }
+        displayWorkouts("Quick Workouts (" + QuickWorkoutMinutes + " minutes or less)", matches);
         pressEnterToContinue();
     }
 
@@ -155,6 +170,20 @@ public class WorkoutTrackerApp {
             } else {
                 return input;
             }
+        }
+    }
+
+    private static boolean promptForYesOrNo(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim().toUpperCase();
+
+            if (input.equals("Y")) {
+                return true;
+            } else  if (input.equals("N")) {
+                return false;
+            }
+            System.out.println("Please type Y or N");
         }
     }
 }
